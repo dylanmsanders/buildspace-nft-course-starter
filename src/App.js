@@ -5,9 +5,9 @@ import myEpicNft from './utils/MyEpicNFT.json';
 import React, { useEffect, useState } from "react";
 
 // Constants
-const TWITTER_HANDLE = '_buildspace';
+const TWITTER_HANDLE = 'lydohNFT';
 const TWITTER_LINK = `https://twitter.com/${TWITTER_HANDLE}`;
-const OPENSEA_LINK = '';
+const OPENSEA_LINK = 'https://testnets.opensea.io/collection/squareturkeynft-v3';
 const TOTAL_MINT_COUNT = 50;
 
 const CONTRACT_ADDRESS = "0xad1dc61FF6afA07D600bF19FcD576Fe05a28E2d2";
@@ -30,6 +30,14 @@ const App = () => {
     * Check if we're authorized to access the user's wallet
     */
     const accounts = await ethereum.request({ method: 'eth_accounts' });
+    let chainId = await ethereum.request({ method: 'eth_chainId' });
+    console.log("Connected to chain " + chainId);
+
+    // String, hex code of the chainId of the Rinkebey test network
+    const goerliChainId = "0x5"; 
+    if (chainId !== goerliChainId) {
+      alert("You are not connected to the Goerli Test Network!");
+    }
 
     /*
     * User can have multiple authorized accounts, we grab the first one if its there!
@@ -152,17 +160,25 @@ const App = () => {
           <p className="sub-text">
             Each unique. Each beautiful. Discover your NFT today.
           </p>
-          return (
+          (
             {currentAccount === "" 
               ? renderNotConnectedContainer()
               : (
                 /** Add askContractToMintNft Action for the onClick event **/
-                <button onClick={askContractToMintNft} className="cta-button connect-wallet-button">
+                <button onClick={askContractToMintNft} className="cta-button connect-wallet-button mb-8">
                   Mint NFT
                 </button>
               )
             }
           );
+          <br></br>
+          <br></br>
+          <a
+            className="footer-text"
+            href={OPENSEA_LINK}
+            target="_blank"
+            rel="noreferrer"
+          >🌊 View Collection on OpenSea</a>
         </div>
         <div className="footer-container">
           <img alt="Twitter Logo" className="twitter-logo" src={twitterLogo} />
@@ -171,7 +187,7 @@ const App = () => {
             href={TWITTER_LINK}
             target="_blank"
             rel="noreferrer"
-          >{`built on @${TWITTER_HANDLE}`}</a>
+          >{`built by @${TWITTER_HANDLE}`}</a>
         </div>
       </div>
     </div>
